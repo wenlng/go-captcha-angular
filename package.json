@@ -1,6 +1,6 @@
 {
   "name": "go-captcha-angular",
-  "version": "2.0.0",
+  "version": "v2.0.0",
   "description": "This is the angular package for go-captcha",
   "private": false,
   "email": "wengaolng@gmail.com",
@@ -24,6 +24,10 @@
   "bugs": {
     "url": "https://github.com/wenlng/go-captcha-angular/issues"
   },
+  "files": [
+    "dist/*",
+    "angular.json"
+  ],
   "license": "MIT",
   "scripts": {
     "start": "ng serve --open",

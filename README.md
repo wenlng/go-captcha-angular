@@ -43,6 +43,7 @@ import { GoCaptchaModule } from 'go-captcha-angular';
 export class AppModule { }
 ```
 
+<br/>
 
 ## 🖖 Click Mode Captcha
 ```angular2html
