@@ -1,0 +1,42 @@
+<div
+    class="go-captcha gc-wrapper"
+    [class]="{'gc-theme': config.showTheme}"
+    [style]="{
+      width:  (config.width || 0) + ( config.verticalPadding * 2)+ 'px',
+      paddingLeft: config.verticalPadding + 'px',
+      paddingRight: config.verticalPadding + 'px',
+      paddingTop: config.verticalPadding + 'px',
+      paddingBottom: config.verticalPadding + 'px',
+    }"
+  >
+  <div class="gc-header">
+    <span>{{ config.title }}</span>
+    <div class="gc-icon-block">
+      <close-icon [width]="22" [height]="22" (click)="closeEvent($event)"></close-icon>
+      <refresh-icon [width]="22" [height]="22" (click)="refreshEvent($event)"></refresh-icon>
+    </div>
+  </div>
+  <div class="gc-body gc-rotate-body" [style]="{width: config.size + 'px', height: config.size + 'px'}">
+    <div class="gc-loading">
+      <loading-icon></loading-icon>
+    </div>
+    <div class="gc-picture gc-rotate-picture" [style]="{width: config.size + 'px', height: config.size + 'px'}">
+      <img [class]="{'gc-hide': data.image == ''}" [src]="data.image" alt="..." />
+      <div class="gc-round"></div>
+    </div>
+
+    <div class="gc-thumb gc-rotate-thumb">
+      <div class="gc-rotate-thumb-block" [style]="{ transform: 'rotate('+thumbAngle+'deg)'}">
+        <img [class]="{'gc-hide': data.thumb == ''}" [src]="data.thumb" alt="..." />
+      </div>
+    </div>
+  </div>
+  <div class="gc-footer">
+    <div class="gc-drag-slide-bar" #dragBarRef (mousedown)="dragEvent($event)">
+      <div class="gc-drag-line"></div>
+      <div class="gc-drag-block" #dragBlockRef (touchstart)="dragEvent($event)" [style]="{left: dragLeft + 'px'}">
+        <arrows-icon></arrows-icon>
+      </div>
+    </div>
+  </div>
+</div>

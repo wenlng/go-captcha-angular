@@ -1,0 +1,40 @@
+{
+  "name": "go-captcha-angular",
+  "version": "2.0.0",
+  "license": "MIT",
+  "keywords": [
+    "go-captcha-angular",
+    "go-captcha-angular2",
+    "go-captcha",
+    "gocaptcha",
+    "captcha-angular",
+    "captcha-angular2",
+    "angular-captcha",
+    "angular2-captcha",
+    "capts",
+    "gocapts"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wenlng/go-captcha-angular"
+  },
+  "bugs": {
+    "url": "https://github.com/wenlng/go-captcha-angular/issues"
+  },
+  "author": "Awen <wengaolng@gmail.com>",
+  "exports": {
+    "./scss/go-captcha.scss": {
+      "style": "./scss/go-captcha.scss"
+    },
+    "./css/go-captcha.css": {
+      "style": "./css/go-captcha.css"
+    }
+  },
+  "peerDependencies": {
+    "@angular/common": ">=13.0.0",
+    "@angular/core": ">=13.0.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  }
+}

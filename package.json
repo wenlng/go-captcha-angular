@@ -1,0 +1,60 @@
+{
+  "name": "go-captcha-angular",
+  "version": "2.0.0",
+  "description": "This is the angular package for go-captcha",
+  "private": false,
+  "email": "wengaolng@gmail.com",
+  "author": "Awen <wengaolng@gmail.com>",
+  "keywords": [
+    "go-captcha-angular",
+    "go-captcha-angular2",
+    "go-captcha",
+    "gocaptcha",
+    "captcha-angular",
+    "captcha-angular2",
+    "angular-captcha",
+    "angular2-captcha",
+    "capts",
+    "gocapts"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wenlng/go-captcha-angular"
+  },
+  "bugs": {
+    "url": "https://github.com/wenlng/go-captcha-angular/issues"
+  },
+  "license": "MIT",
+  "scripts": {
+    "start": "ng serve --open",
+    "build": "ng build go-captcha-angular && run-p build:sass && run-p copy-sass",
+    "build:example": "ng build example --base-href go-captcha-angular/",
+    "build:sass": "node-sass --output-style compressed projects/go-captcha-angular/src/scss/ -o dist/go-captcha-angular/css",
+    "copy-sass": "mkdir -p dist/go-captcha-angular/scss && cp projects/go-captcha-angular/src/scss/*.scss dist/go-captcha-angular/scss",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
+  },
+  "dependencies": {
+    "@angular/animations": "^15.0.3",
+    "@angular/common": "^15.0.3",
+    "@angular/compiler": "^15.0.3",
+    "@angular/core": "^15.0.3",
+    "@angular/forms": "^15.0.3",
+    "@angular/platform-browser": "^15.0.3",
+    "@angular/platform-browser-dynamic": "^15.0.3",
+    "ngx-highlightjs": "^6.1.2",
+    "rxjs": "^7.6.0",
+    "tslib": "^2.4.1",
+    "zone.js": "^0.11.8"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^15.0.3",
+    "@angular/cli": "^15.0.3",
+    "@angular/compiler-cli": "^15.0.3",
+    "@types/node": "^18.11.13",
+    "ng-packagr": "^15.0.3",
+    "node-sass": "^9.0.0",
+    "npm-run-all2": "^6.2.0",
+    "typescript": "~4.8.4"
+  }
+}

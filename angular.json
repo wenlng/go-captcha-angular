@@ -1,0 +1,145 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": false
+  },
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "go-captcha-angular": {
+      "projectType": "library",
+      "root": "projects/go-captcha-angular",
+      "sourceRoot": "projects/go-captcha-angular/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/go-captcha-angular/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/go-captcha-angular/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/go-captcha-angular/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/go-captcha-angular/src/test.ts",
+            "tsConfig": "projects/go-captcha-angular/tsconfig.spec.json",
+            "karmaConfig": "projects/go-captcha-angular/karma.conf.js"
+          }
+        }
+      }
+    },
+    "example": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        },
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
+      "root": "projects/example",
+      "sourceRoot": "projects/example/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "example",
+            "index": "projects/example/src/index.html",
+            "main": "projects/example/src/main.ts",
+            "polyfills": "projects/example/src/polyfills.ts",
+            "tsConfig": "projects/example/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/example/src/favicon.ico",
+              "projects/example/src/assets",
+              "projects/example/src/assets"
+            ],
+            "styles": [
+              "projects/example/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/example/src/environments/environment.ts",
+                  "with": "projects/example/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "example:build:production"
+            },
+            "development": {
+              "browserTarget": "example:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "example:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/example/src/test.ts",
+            "polyfills": "projects/example/src/polyfills.ts",
+            "tsConfig": "projects/example/tsconfig.spec.json",
+            "karmaConfig": "projects/example/karma.conf.js",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/example/src/favicon.ico",
+              "projects/example/src/assets"
+            ],
+            "styles": [
+              "projects/example/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        }
+      }
+    }
+  }
+}

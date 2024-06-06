@@ -1,0 +1,9 @@
+.idea
+aot
+node_modules
+/dist
+/build
+npm-debug.log
+*.map
+/docs/build
+.angular

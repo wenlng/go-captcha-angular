@@ -1,0 +1,18 @@
+.go-captcha {
+  .gc-header2 {
+    text-align: center;
+  }
+
+  .gc-tile {
+    position: absolute;
+    z-index: 2;
+    cursor: pointer;
+
+    img {
+      display: block;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}

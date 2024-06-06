@@ -1,0 +1,40 @@
+<div
+    class="go-captcha gc-wrapper"
+    [class]="{'gc-theme': config.showTheme}"
+    [style]="{
+      width:  (config.width || 0) + ( config.verticalPadding * 2)+ 'px',
+      paddingLeft: config.verticalPadding + 'px',
+      paddingRight: config.verticalPadding + 'px',
+      paddingTop: config.verticalPadding + 'px',
+      paddingBottom: config.verticalPadding + 'px',
+    }"
+  >
+  <div class="gc-header">
+    <span>{{ config.title }}</span>
+    <img [class]="{'gc-hide': data.thumb == ''}"
+         [style]="{width: config.thumbWidth + 'px', height: config.thumbHeight + 'px'}"
+         [attr.src]="data.thumb"
+         alt="..."/>
+  </div>
+  <div class="gc-body" [style]="{width: config.width + 'px', height: config.height + 'px'}">
+    <div class="gc-loading">
+      <loading-icon></loading-icon>
+    </div>
+    <img class="gc-picture" [class]="{'gc-hide': data.image == ''}" [style]="{width: config.width + 'px', height: config.height + 'px'}" [attr.src]="data.image" alt="..." (click)="clickEvent($event)"/>
+    <div class="gc-dots">
+      <div class="gc-dot" *ngFor="let dot of dots;" [style]="{
+          top: (dot.y - 11) + 'px',
+          left: (dot.x - 11) + 'px',
+        }">{{dot.index}}</div>
+    </div>
+  </div>
+  <div class="gc-footer">
+    <div class="gc-icon-block gc-icon-block2">
+      <close-icon [width]="22" [height]="22" (click)="closeEvent($event)"></close-icon>
+      <refresh-icon [width]="22" [height]="22" (click)="refreshEvent($event)"></refresh-icon>
+    </div>
+    <div class="gc-button-block">
+      <button (click)="confirmEvent($event)">{{ config.buttonText }}</button>
+    </div>
+  </div>
+</div>
