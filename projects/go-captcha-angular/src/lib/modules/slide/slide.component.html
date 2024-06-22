@@ -1,13 +1,13 @@
 <div
-    class="go-captcha gc-wrapper"
-    [class]="{'gc-theme': config.showTheme}"
-    [style]="{
-      width:  (config.width || 0) + ( config.verticalPadding * 2)+ 'px',
-      paddingLeft: config.verticalPadding + 'px',
-      paddingRight: config.verticalPadding + 'px',
-      paddingTop: config.verticalPadding + 'px',
-      paddingBottom: config.verticalPadding + 'px',
-    }"
+  class="go-captcha gc-wrapper"
+  [class]="{'gc-theme': config.showTheme}"
+  [style]="{
+    width:  (config.width || 0) + ( config.horizontalPadding * 2) + (config.showTheme ? 2 : 0) + 'px',
+    paddingLeft: config.horizontalPadding + 'px',
+    paddingRight: config.horizontalPadding + 'px',
+    paddingTop: config.verticalPadding + 'px',
+    paddingBottom: config.verticalPadding + 'px',
+  }"
 >
   <div class="gc-header">
     <span>{{ config.title }}</span>
@@ -16,17 +16,25 @@
       <refresh-icon [width]="22" [height]="22" (click)="refreshEvent($event)"></refresh-icon>
     </div>
   </div>
-  <div class="gc-body" #containerRef [style]="{width: config.width + 'px', height: config.height + 'px'}">
+  <div
+    class="gc-body"
+    #containerRef
+    [style]="{width: config.width + 'px', height: config.height + 'px'}"
+  >
     <div class="gc-loading">
       <loading-icon></loading-icon>
     </div>
     <img class="gc-picture" [class]="{'gc-hide': data.image == ''}" [attr.src]="data.image" alt="..."/>
-    <div class="gc-tile" #tileRef [style]="{
-      width: data.thumbWidth + 'px',
-      height: data.thumbHeight + 'px',
-      top: data.thumbY + 'px',
-      left: state.thumbLeft + 'px'
-    }">
+    <div
+      class="gc-tile"
+      #tileRef
+      [style]="{
+        width: data.thumbWidth + 'px',
+        height: data.thumbHeight + 'px',
+        top: data.thumbY + 'px',
+        left: state.thumbLeft + 'px'
+      }"
+    >
       <img [class]="{'gc-hide': data.thumb == ''}" [attr.src]="data.thumb" alt="..."/>
     </div>
   </div>

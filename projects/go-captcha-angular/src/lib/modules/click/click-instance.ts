@@ -1,3 +1,4 @@
+
 export interface ClickConfig {
     width?: number;
     height?: number;
@@ -43,8 +44,7 @@ export interface ClickEvent {
 }
 
 export interface ClickInstance {
+    data: ClickData,
     config?: ClickConfig;
-    clickEvent?: () => void;
-    disabled?: boolean;
-    title?: string;
+    events?: ClickEvent,
 }

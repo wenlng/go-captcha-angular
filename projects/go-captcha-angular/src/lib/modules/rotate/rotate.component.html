@@ -1,13 +1,13 @@
 <div
-    class="go-captcha gc-wrapper"
-    [class]="{'gc-theme': config.showTheme}"
-    [style]="{
-      width:  (config.width || 0) + ( config.verticalPadding * 2)+ 'px',
-      paddingLeft: config.verticalPadding + 'px',
-      paddingRight: config.verticalPadding + 'px',
-      paddingTop: config.verticalPadding + 'px',
-      paddingBottom: config.verticalPadding + 'px',
-    }"
+  class="go-captcha gc-wrapper"
+  [class]="{'gc-theme': config.showTheme}"
+  [style]="{
+    width:  (config.width || 0) + ( config.horizontalPadding * 2) + (config.showTheme ? 2 : 0) + 'px',
+    paddingLeft: config.horizontalPadding + 'px',
+    paddingRight: config.horizontalPadding + 'px',
+    paddingTop: config.verticalPadding + 'px',
+    paddingBottom: config.verticalPadding + 'px',
+  }"
   >
   <div class="gc-header">
     <span>{{ config.title }}</span>
@@ -16,7 +16,10 @@
       <refresh-icon [width]="22" [height]="22" (click)="refreshEvent($event)"></refresh-icon>
     </div>
   </div>
-  <div class="gc-body gc-rotate-body" [style]="{width: config.size + 'px', height: config.size + 'px'}">
+  <div
+    class="gc-body gc-rotate-body"
+    [style]="{width: config.size + 'px', height: config.size + 'px'}"
+  >
     <div class="gc-loading">
       <loading-icon></loading-icon>
     </div>

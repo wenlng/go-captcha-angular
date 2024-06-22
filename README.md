@@ -1,5 +1,11 @@
 # Go Captcha Angular Package
 
+<p> ⭐️ If it helps you, please give a star.</p>
+<img src="http://47.104.180.148/go-captcha/go-captcha-v2.jpg" alt="Poster">
+
+<br/>
+
+## Install
 ```shell
 yarn add go-captcha-angular
 # or
@@ -105,7 +111,7 @@ import GoCaptcha from 'go-captcha-angular';
 ### Parameter Reference
 ```ts
 // config = {}
-interface SlidConfig {
+interface SlideConfig {
   width?: number;
   height?: number;
   thumbWidth?: number;
@@ -117,7 +123,7 @@ interface SlidConfig {
 }
 
 // data = {}
-interface SlidData {
+interface SlideData {
   thumbX: number;
   thumbY: number;
   thumbWidth: number;
@@ -127,16 +133,17 @@ interface SlidData {
 }
 
 // events = {}
-interface SlidEvents {
+interface SlideEvents {
   move?: (x: number, y: number) => void;
   refresh?: () => void;
   close?: () => void;
-  confirm?: (point: SlidPoint) => boolean;
+  confirm?: (point: SlidePoint) => boolean;
 }
 ```
+
 ```ts
 // config = {}
-interface SlidRegionConfig {
+interface SlideRegionConfig {
   width?: number;
   height?: number;
   thumbWidth?: number;
@@ -148,7 +155,7 @@ interface SlidRegionConfig {
 }
 
 // data = {}
-interface SlidRegionData {
+interface SlideRegionData {
   thumbX: number;
   thumbY: number;
   thumbWidth: number;
@@ -158,11 +165,11 @@ interface SlidRegionData {
 }
 
 // events = {}
-interface SlidRegionEvents {
+interface SlideRegionEvents {
   move?: (x: number, y: number) => void;
   refresh?: () => void;
   close?: () => void;
-  confirm?: (point: SlidRegionPoint) => boolean;
+  confirm?: (point: SlideRegionPoint) => boolean;
 }
 ```
 
@@ -232,3 +239,13 @@ export interface ButtonConfig {
   horizontalPadding?: number;
 }
 ```
+
+<br/>
+
+## 🍹 Buy me a coffee
+<div>
+<a href="http://witkeycode.com/sponsor" target="_blank"><img src="http://47.104.180.148/payment-code/wxpay.png" alt="Buy Me A Coffee" style="width: 217px !important;" ></a>
+<a href="http://witkeycode.com/sponsor" target="_blank"><img src="http://47.104.180.148/payment-code/alipay.png" alt="Buy Me A Coffee" style="width: 217px !important;" ></a>
+</div>
+
+<br/>

@@ -1,14 +1,14 @@
 <div
-    [class]="['go-captcha', 'gc-button-mode', 'gc-btn-block', 'gc-'+type, disabled ? 'gc-disabled' : '' ]"
-    (click)="handleClick($event)"
-    [style]="{
-      'width': config.width + 'px',
-      'height': config.height + 'px',
-      'padding-left': config.verticalPadding + 'px',
-      'padding-right': config.verticalPadding + 'px',
-      'padding-top': config.verticalPadding + 'px',
-      'padding-bottom': config.verticalPadding + 'px',
-    }"
+  [class]="['go-captcha', 'gc-button-mode', 'gc-btn-block', 'gc-'+type, disabled ? 'gc-disabled' : '' ]"
+  (click)="handleClick($event)"
+  [style]="{
+    'width': config.width + 'px',
+    'height': config.height + 'px',
+    'padding-left': config.horizontalPadding + 'px',
+    'padding-right': config.horizontalPadding + 'px',
+    'padding-top': config.verticalPadding + 'px',
+    'padding-bottom': config.verticalPadding + 'px',
+  }"
 >
   <div [class]="{'gc-ripple': type === 'default'}" [ngSwitch]="type">
     <btn-default-icon *ngSwitchCase="'default'"></btn-default-icon>

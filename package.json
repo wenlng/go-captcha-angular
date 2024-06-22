@@ -1,6 +1,6 @@
 {
   "name": "go-captcha-angular",
-  "version": "v2.0.0",
+  "version": "1.0.0",
   "description": "This is the angular package for go-captcha",
   "private": false,
   "email": "wengaolng@gmail.com",
