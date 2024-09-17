@@ -28,6 +28,10 @@
     "dist/*",
     "angular.json"
   ],
+  "peerDependencies": {
+    "@angular/common": ">=13.0.0",
+    "@angular/core": ">=13.0.0"
+  },
   "license": "MIT",
   "scripts": {
     "start": "ng serve --open",
