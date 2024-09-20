@@ -45,6 +45,7 @@ export class RotateComponent {
 
         let angle = 0
         let isMoving = false
+        let tmpLeaveDragEvent: Event|any = null
         let startX = 0;
         if (touch) {
             startX = touch.pageX - offsetLeft
@@ -92,14 +93,8 @@ export class RotateComponent {
                 return
             }
 
-            this.dragBarRef.nativeElement.removeEventListener("mousemove", moveEvent, false)
-            this.dragBarRef.nativeElement.removeEventListener("touchmove", moveEvent, { passive: false })
-
-            this.dragBarRef.nativeElement.removeEventListener( "mouseup", upEvent, false)
-            this.dragBarRef.nativeElement.removeEventListener( "mouseout", upEvent, false)
-            this.dragBarRef.nativeElement.removeEventListener("touchend", upEvent, false)
-
             isMoving = false
+            clearEvent()
             this.events.confirm && this.events.confirm(parseInt(angle.toString()), () => {
                 this.clear()
             })
@@ -108,11 +103,47 @@ export class RotateComponent {
             e.preventDefault()
         }
 
+        const leaveDragBlockEvent = (e: Event|any) => {
+            tmpLeaveDragEvent = e
+        }
+
+        const enterDragBlockEvent = () => {
+            tmpLeaveDragEvent = null
+        }
+
+        const leaveUpEvent = (_: Event|any) => {
+            if(!tmpLeaveDragEvent) {
+                return
+            }
+
+            upEvent(tmpLeaveDragEvent)
+            clearEvent()
+        }
+
+        const clearEvent = () => {
+            this.dragBarRef.nativeElement.removeEventListener("mousemove", moveEvent, false)
+            this.dragBarRef.nativeElement.removeEventListener("touchmove", moveEvent, { passive: false })
+
+            this.dragBarRef.nativeElement.removeEventListener( "mouseup", upEvent, false)
+            // this.dragBarRef.nativeElement.removeEventListener( "mouseout", upEvent, false)
+            this.dragBarRef.nativeElement.removeEventListener( "mouseenter", enterDragBlockEvent, false)
+            this.dragBarRef.nativeElement.removeEventListener( "mouseleave", leaveDragBlockEvent, false)
+            this.dragBarRef.nativeElement.removeEventListener("touchend", upEvent, false)
+
+            document.body.removeEventListener("mouseleave", upEvent, false)
+            document.body.removeEventListener("mouseup", leaveUpEvent, false)
+        }
+
         this.dragBarRef.nativeElement.addEventListener("mousemove", moveEvent, false)
         this.dragBarRef.nativeElement.addEventListener("touchmove", moveEvent, { passive: false })
         this.dragBarRef.nativeElement.addEventListener( "mouseup", upEvent, false)
-        this.dragBarRef.nativeElement.addEventListener( "mouseout", upEvent, false)
+        // this.dragBarRef.nativeElement.addEventListener( "mouseout", upEvent, false)
+        this.dragBarRef.nativeElement.addEventListener( "mouseenter", enterDragBlockEvent, false)
+        this.dragBarRef.nativeElement.addEventListener( "mouseleave", leaveDragBlockEvent, false)
         this.dragBarRef.nativeElement.addEventListener("touchend", upEvent, false)
+
+        document.body.addEventListener("mouseleave", upEvent, false)
+        document.body.addEventListener("mouseup", leaveUpEvent, false)
     }
 
     closeEvent = (e: Event|any) => {

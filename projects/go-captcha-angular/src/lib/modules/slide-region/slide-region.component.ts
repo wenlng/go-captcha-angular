@@ -58,6 +58,7 @@ export class SlideRegionComponent {
         const maxHeight = height - tileHeight
 
         let isMoving = false
+        let tmpLeaveDragEvent: Event|any = null
         let startX = 0
         let startY = 0
         let tileLeft = 0
@@ -119,13 +120,7 @@ export class SlideRegionComponent {
                 return
             }
             isMoving = false
-
-            this.containerRef.nativeElement.removeEventListener("mousemove", moveEvent, false)
-            this.containerRef.nativeElement.removeEventListener("touchmove", moveEvent, { passive: false })
-
-            this.containerRef.nativeElement.removeEventListener( "mouseup", upEvent, false)
-            this.containerRef.nativeElement.removeEventListener( "mouseout", upEvent, false)
-            this.containerRef.nativeElement.removeEventListener("touchend", upEvent, false)
+            clearEvent()
 
             this.events.confirm && this.events.confirm({x: tileLeft, y: tileTop}, () => {
                 this.clear()
@@ -135,11 +130,47 @@ export class SlideRegionComponent {
             e.preventDefault()
         }
 
+        const leaveDragBlockEvent = (e: Event|any) => {
+            tmpLeaveDragEvent = e
+        }
+
+        const enterDragBlockEvent = () => {
+            tmpLeaveDragEvent = null
+        }
+
+        const leaveUpEvent = (_: Event|any) => {
+            if(!tmpLeaveDragEvent) {
+                return
+            }
+
+            upEvent(tmpLeaveDragEvent)
+            clearEvent()
+        }
+
+        const clearEvent = () => {
+            this.containerRef.nativeElement.removeEventListener("mousemove", moveEvent, false)
+            this.containerRef.nativeElement.removeEventListener("touchmove", moveEvent, { passive: false })
+
+            this.containerRef.nativeElement.removeEventListener( "mouseup", upEvent, false)
+            // this.containerRef.nativeElement.removeEventListener( "mouseout", upEvent, false)
+            this.containerRef.nativeElement.removeEventListener( "mouseenter", enterDragBlockEvent, false)
+            this.containerRef.nativeElement.removeEventListener( "mouseleave", leaveDragBlockEvent, false)
+            this.containerRef.nativeElement.removeEventListener("touchend", upEvent, false)
+
+            document.body.removeEventListener("mouseleave", upEvent, false)
+            document.body.removeEventListener("mouseup", leaveUpEvent, false)
+        }
+
         this.containerRef.nativeElement.addEventListener("mousemove", moveEvent, false)
         this.containerRef.nativeElement.addEventListener("touchmove", moveEvent, { passive: false })
         this.containerRef.nativeElement.addEventListener( "mouseup", upEvent, false)
-        this.containerRef.nativeElement.addEventListener( "mouseout", upEvent, false)
+        // this.containerRef.nativeElement.addEventListener( "mouseout", upEvent, false)
+        this.containerRef.nativeElement.addEventListener( "mouseenter", enterDragBlockEvent, false)
+        this.containerRef.nativeElement.addEventListener( "mouseleave", leaveDragBlockEvent, false)
         this.containerRef.nativeElement.addEventListener("touchend", upEvent, false)
+
+        document.body.addEventListener("mouseleave", upEvent, false)
+        document.body.addEventListener("mouseup", leaveUpEvent, false)
     }
 
     closeEvent(e: Event|any){

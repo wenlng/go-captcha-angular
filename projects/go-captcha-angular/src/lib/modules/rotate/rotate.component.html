@@ -35,10 +35,12 @@
     </div>
   </div>
   <div class="gc-footer">
-    <div class="gc-drag-slide-bar" #dragBarRef (mousedown)="dragEvent($event)">
+    <div class="gc-drag-slide-bar" #dragBarRef>
       <div class="gc-drag-line"></div>
-      <div class="gc-drag-block" #dragBlockRef (touchstart)="dragEvent($event)" [style]="{left: dragLeft + 'px'}">
-        <arrows-icon></arrows-icon>
+      <div class="gc-drag-block" #dragBlockRef (mousedown)="dragEvent($event)" [style]="{left: dragLeft + 'px'}">
+        <div class="drag-block-inline" (touchstart)="dragEvent($event)">
+          <arrows-icon></arrows-icon>
+        </div>
       </div>
     </div>
   </div>

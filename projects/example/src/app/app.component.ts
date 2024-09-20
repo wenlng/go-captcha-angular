@@ -108,6 +108,13 @@ export class AppComponent {
     refresh(): void {
       console.log("refresh >>>>>>>")
     },
+    confirm(point: any, clear: Function): void {
+      console.log("point >>>>>>>", point)
+
+      setTimeout(() => {
+        clear()
+      }, 100)
+    },
     close(): void {
       console.log("close >>>>>>>")
     }
