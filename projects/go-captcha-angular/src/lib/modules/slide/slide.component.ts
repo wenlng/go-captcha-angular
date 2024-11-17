@@ -145,7 +145,7 @@ export class SlideComponent {
             isMoving = false
             clearEvent()
 
-            if (currentThumbX <= 0) {
+            if (currentThumbX < 0) {
                 return
             }
 

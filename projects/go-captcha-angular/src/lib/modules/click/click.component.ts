@@ -38,7 +38,7 @@ export class ClickComponent {
     }
 
     get hasDisplayImageState() {
-        return this.localData.image != '' && this.localData.thumb != ''
+        return this.localData.image != '' || this.localData.thumb != ''
     }
 
     clickEvent(e: Event|any){
