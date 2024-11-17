@@ -1,8 +1,15 @@
 /**
  * @Author Awen
- * @Date 2024/05/25
+ * @Date 2024/06/01
  * @Email wengaolng@gmail.com
  **/
+
+export interface SlideRef {
+    reset: () => void,
+    clear: () => void,
+    refresh: () => void,
+    close: () => void,
+}
 
 export interface SlideConfig {
     width?: number;
@@ -13,6 +20,8 @@ export interface SlideConfig {
     horizontalPadding?: number;
     showTheme?: boolean;
     title?: string;
+    iconSize?: number;
+    scope ?: boolean;
 }
 
 export const defaultSlideConfig = ():SlideConfig => ({
@@ -24,6 +33,8 @@ export const defaultSlideConfig = ():SlideConfig => ({
     horizontalPadding: 12,
     showTheme: true,
     title: "请拖动滑块完成拼图",
+    iconSize: 22,
+    scope: true,
 })
 
 export interface SlideData {

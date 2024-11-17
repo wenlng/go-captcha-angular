@@ -1,3 +1,11 @@
+export interface RotateRef {
+    reset: () => void,
+    clear: () => void,
+    refresh: () => void,
+    close: () => void,
+}
+
+
 export interface RotateConfig {
     width?: number;
     height?: number;
@@ -6,6 +14,8 @@ export interface RotateConfig {
     horizontalPadding?: number;
     showTheme?: boolean;
     title?: string;
+    iconSize?: number;
+    scope ?: boolean;
 }
 
 export const defaultRotateConfig = ():RotateConfig => ({
@@ -16,6 +26,8 @@ export const defaultRotateConfig = ():RotateConfig => ({
     horizontalPadding: 12,
     showTheme: true,
     title: "请拖动滑块完成拼图",
+    iconSize: 22,
+    scope: true,
 })
 
 export interface RotateData {

@@ -1,43 +1,77 @@
 <div
   class="go-captcha gc-wrapper"
-  [class]="{'gc-theme': config.showTheme}"
+  [class]="{'gc-theme': localConfig.showTheme}"
   [style]="{
-    width:  (config.width || 0) + ( config.horizontalPadding * 2) + (config.showTheme ? 2 : 0) + 'px',
-    paddingLeft: config.horizontalPadding + 'px',
-    paddingRight: config.horizontalPadding + 'px',
-    paddingTop: config.verticalPadding + 'px',
-    paddingBottom: config.verticalPadding + 'px',
+    width:  (localConfig.width || 0) + ( localConfig.horizontalPadding * 2) + (localConfig.showTheme ? 2 : 0) + 'px',
+    paddingLeft: localConfig.horizontalPadding + 'px',
+    paddingRight: localConfig.horizontalPadding + 'px',
+    paddingTop: localConfig.verticalPadding + 'px',
+    paddingBottom: localConfig.verticalPadding + 'px',
+    display: hasDisplayWrapperState ? 'block' : 'none'
   }"
+  #rootRef
   >
   <div class="gc-header">
-    <span>{{ config.title }}</span>
+    <span>{{ localConfig.title }}</span>
     <div class="gc-icon-block">
-      <close-icon [width]="22" [height]="22" (click)="closeEvent($event)"></close-icon>
-      <refresh-icon [width]="22" [height]="22" (click)="refreshEvent($event)"></refresh-icon>
+      <close-icon
+        [width]="localConfig.iconSize"
+        [height]="localConfig.iconSize"
+        (click)="closeEvent($event)"
+      ></close-icon>
+      <refresh-icon
+        [width]="localConfig.iconSize"
+        [height]="localConfig.iconSize"
+        (click)="refreshEvent($event)"
+      ></refresh-icon>
     </div>
   </div>
   <div
     class="gc-body gc-rotate-body"
-    [style]="{width: config.size + 'px', height: config.size + 'px'}"
+    [style]="{width: localConfig.width + 'px', height: localConfig.height + 'px'}"
   >
-    <div class="gc-loading">
-      <loading-icon></loading-icon>
-    </div>
-    <div class="gc-picture gc-rotate-picture" [style]="{width: config.size + 'px', height: config.size + 'px'}">
-      <img [class]="{'gc-hide': data.image == ''}" [src]="data.image" alt="..." />
-      <div class="gc-round"></div>
-    </div>
+    <div [style]="{width: size  + 'px', height: size + 'px' }">
+      <div class="gc-loading">
+        <loading-icon></loading-icon>
+      </div>
+      <div
+        class="gc-picture gc-rotate-picture"
+        [style]="{width: localConfig.size + 'px', height: localConfig.size + 'px'}"
+      >
+        <img
+          [class]="{'gc-hide': localData.image == ''}"
+          [style]="{display: hasDisplayImageState ? 'block' : 'none'}"
+          [src]="localData.image"
+          alt=""
+        />
+        <div class="gc-round"></div>
+      </div>
 
-    <div class="gc-thumb gc-rotate-thumb">
-      <div class="gc-rotate-thumb-block" [style]="{ transform: 'rotate('+thumbAngle+'deg)'}">
-        <img [class]="{'gc-hide': data.thumb == ''}" [src]="data.thumb" alt="..." />
+      <div class="gc-thumb gc-rotate-thumb">
+        <div
+          class="gc-rotate-thumb-block"
+          [style]="{ transform: 'rotate('+thumbAngle+'deg)'}"
+        >
+          <img
+            [class]="{'gc-hide': localData.thumb == ''}"
+            [style]="{display: hasDisplayImageState ? 'block' : 'none'}"
+            [src]="localData.thumb"
+            alt=""
+          />
+        </div>
       </div>
     </div>
   </div>
   <div class="gc-footer">
     <div class="gc-drag-slide-bar" #dragBarRef>
       <div class="gc-drag-line"></div>
-      <div class="gc-drag-block" #dragBlockRef (mousedown)="dragEvent($event)" [style]="{left: dragLeft + 'px'}">
+      <div
+        class="gc-drag-block"
+        #dragBlockRef
+        (mousedown)="dragEvent($event)"
+        [style]="{left: dragLeft + 'px'}"
+        [class]="{'disabled': !hasDisplayImageState}"
+      >
         <div class="drag-block-inline" (touchstart)="dragEvent($event)">
           <arrows-icon></arrows-icon>
         </div>

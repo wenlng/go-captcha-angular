@@ -1,5 +1,5 @@
 import {Component, ElementRef, Input, ViewChild, ViewEncapsulation} from '@angular/core'
-import {checkTargetFather} from "../../helper/helper";
+import {checkTargetFather, mergeTo} from "../../helper/helper";
 import {defaultSlideRegionConfig, SlideRegionConfig, SlideRegionData, SlideRegionEvent} from "./slide-region-instance";
 
 @Component({
@@ -10,9 +10,9 @@ import {defaultSlideRegionConfig, SlideRegionConfig, SlideRegionData, SlideRegio
 })
 export class SlideRegionComponent {
     @Input()
-    config?: SlideRegionConfig = defaultSlideRegionConfig()
+    localConfig?: SlideRegionConfig = defaultSlideRegionConfig()
     @Input()
-    data: SlideRegionData = {
+    localData: SlideRegionData = {
         thumbX: 0,
         thumbY: 0,
         thumbWidth: 0,
@@ -21,7 +21,10 @@ export class SlideRegionComponent {
         thumb: ""
     } as SlideRegionData
     @Input()
-    events?: SlideRegionEvent = {}
+    localEvents?: SlideRegionEvent = {}
+
+    @ViewChild('rootRef', {static: false})
+    rootRef: ElementRef
 
     @ViewChild('containerRef', {static: false})
     containerRef: ElementRef
@@ -35,15 +38,45 @@ export class SlideRegionComponent {
     @ViewChild('tileRef', {static: false})
     tileRef: ElementRef
 
-    state: {x: number, y: number} = {x: this.data.thumbX || 0, y: this.data.thumbY || 0}
+    state: {x: number, y: number} = {x: this.localData.thumbX || 0, y: this.localData.thumbY || 0}
+    isFreeze: boolean = false
+
+    @Input()
+    set config(config: SlideRegionConfig) {
+        mergeTo(this.localConfig, config)
+        this.localConfig = config
+    }
+
+    @Input()
+    set data(data: SlideRegionData) {
+        mergeTo(this.localData, data)
+        this.localData = data
+        this.updateState()
+    }
+
+    @Input()
+    set events(events: SlideRegionEvent) {
+        mergeTo(this.localEvents, events)
+        this.localEvents = events
+    }
+
+    get hasDisplayWrapperState() {
+        return (this.localConfig.width || 0) > 0 || (this.localConfig.height || 0) > 0
+    }
+
+    get hasDisplayImageState() {
+        return this.localData.image != '' && this.localData.thumb != ''
+    }
 
     ngAfterViewInit() {
         this.tileRef.nativeElement.addEventListener('dragstart', (event: any) => event.preventDefault());
     }
 
-    clear = () => {
-        this.state.x = this.data.thumbX || 0
-        this.state.y = this.data.thumbY || 0
+    updateState() {
+        if (!this.isFreeze) {
+            this.state.x = (this.localData.thumbX || 0)
+            this.state.y = (this.localData.thumbY || 0)
+        }
     }
 
     dragEvent(e: Event|any) {
@@ -105,7 +138,7 @@ export class SlideRegionComponent {
             this.state.y = top
             tileLeft = left
             tileTop = top
-            this.events.move && this.events.move(left, top)
+            this.localEvents.move && this.localEvents.move(left, top)
 
             e.cancelBubble = true
             e.preventDefault()
@@ -122,8 +155,12 @@ export class SlideRegionComponent {
             isMoving = false
             clearEvent()
 
-            this.events.confirm && this.events.confirm({x: tileLeft, y: tileTop}, () => {
-                this.clear()
+            if (tileLeft <= 0 || tileTop <= 0) {
+                return
+            }
+
+            this.localEvents.confirm && this.localEvents.confirm({x: tileLeft, y: tileTop}, () => {
+                this.reset()
             })
 
             e.cancelBubble = true
@@ -147,46 +184,74 @@ export class SlideRegionComponent {
             clearEvent()
         }
 
+        const scope = this.localConfig.scope
+        const dragDom = scope ? this.rootRef.nativeElement : this.dragBarRef.nativeElement
+        const scopeDom = scope ? this.rootRef.nativeElement : document.body
+
         const clearEvent = () => {
-            this.containerRef.nativeElement.removeEventListener("mousemove", moveEvent, false)
-            this.containerRef.nativeElement.removeEventListener("touchmove", moveEvent, { passive: false })
+            scopeDom.removeEventListener("mousemove", moveEvent, false)
+            scopeDom.removeEventListener("touchmove", moveEvent, { passive: false })
 
-            this.containerRef.nativeElement.removeEventListener( "mouseup", upEvent, false)
-            // this.containerRef.nativeElement.removeEventListener( "mouseout", upEvent, false)
-            this.containerRef.nativeElement.removeEventListener( "mouseenter", enterDragBlockEvent, false)
-            this.containerRef.nativeElement.removeEventListener( "mouseleave", leaveDragBlockEvent, false)
-            this.containerRef.nativeElement.removeEventListener("touchend", upEvent, false)
+            dragDom.removeEventListener( "mouseup", upEvent, false)
+            dragDom.removeEventListener( "mouseenter", enterDragBlockEvent, false)
+            dragDom.removeEventListener( "mouseleave", leaveDragBlockEvent, false)
+            dragDom.removeEventListener("touchend", upEvent, false)
 
-            document.body.removeEventListener("mouseleave", upEvent, false)
-            document.body.removeEventListener("mouseup", leaveUpEvent, false)
+            scopeDom.removeEventListener("mouseleave", upEvent, false)
+            scopeDom.removeEventListener("mouseup", leaveUpEvent, false)
+
+            this.isFreeze = false
         }
+        this.isFreeze = true
 
-        this.containerRef.nativeElement.addEventListener("mousemove", moveEvent, false)
-        this.containerRef.nativeElement.addEventListener("touchmove", moveEvent, { passive: false })
-        this.containerRef.nativeElement.addEventListener( "mouseup", upEvent, false)
-        // this.containerRef.nativeElement.addEventListener( "mouseout", upEvent, false)
-        this.containerRef.nativeElement.addEventListener( "mouseenter", enterDragBlockEvent, false)
-        this.containerRef.nativeElement.addEventListener( "mouseleave", leaveDragBlockEvent, false)
-        this.containerRef.nativeElement.addEventListener("touchend", upEvent, false)
+        scopeDom.addEventListener("mousemove", moveEvent, false)
+        scopeDom.addEventListener("touchmove", moveEvent, { passive: false })
 
-        document.body.addEventListener("mouseleave", upEvent, false)
-        document.body.addEventListener("mouseup", leaveUpEvent, false)
+        dragDom.addEventListener( "mouseup", upEvent, false)
+        dragDom.addEventListener( "mouseenter", enterDragBlockEvent, false)
+        dragDom.addEventListener( "mouseleave", leaveDragBlockEvent, false)
+        dragDom.addEventListener("touchend", upEvent, false)
+
+        scopeDom.addEventListener("mouseleave", upEvent, false)
+        scopeDom.addEventListener("mouseup", leaveUpEvent, false)
     }
 
     closeEvent(e: Event|any){
-        this.events.close && this.events.close()
-        this.clear()
+        this.close()
         e.cancelBubble = true
         e.preventDefault()
         return false
     }
 
     refreshEvent(e: Event|any) {
-        this.events.refresh && this.events.refresh()
-        this.clear()
+        this.refresh()
         e.cancelBubble = true
         e.preventDefault()
         return false
     }
 
+    reset(){
+        this.state.x = this.localData.thumbX || 0
+        this.state.y = this.localData.thumbY || 0
+    }
+
+    clear(){
+        this.reset()
+        this.localData.image = ''
+        this.localData.thumb = ''
+        this.localData.thumbX = 0
+        this.localData.thumbY = 0
+        this.localData.thumbHeight = 0
+        this.localData.thumbWidth = 0
+    }
+
+    close() {
+        this.localEvents.close && this.localEvents.close()
+        this.reset()
+    }
+
+    refresh() {
+        this.localEvents.refresh && this.localEvents.refresh()
+        this.reset()
+    }
 }

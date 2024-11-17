@@ -1,6 +1,6 @@
 import {Component, Input, ViewEncapsulation} from '@angular/core'
 import {ClickConfig, ClickData, ClickDot, ClickEvent, defaultClickConfig} from "./click-instance";
-import {getDomXY} from "../../helper/helper";
+import {getDomXY, mergeTo} from "../../helper/helper";
 
 @Component({
     selector: 'go-captcha-click',
@@ -9,15 +9,37 @@ import {getDomXY} from "../../helper/helper";
     encapsulation: ViewEncapsulation.None,
 })
 export class ClickComponent {
-    @Input()
-    config?: ClickConfig = defaultClickConfig()
-    @Input()
-    data: ClickData = {image: "", thumb: ""} as ClickData
-    @Input()
-    events?: ClickEvent = {}
+    localConfig?: ClickConfig = defaultClickConfig()
+    localData: ClickData = {image: "", thumb: ""} as ClickData
+    localEvents?: ClickEvent = {}
 
     dots: Array<ClickDot> = []
 
+    @Input()
+    set config(config: ClickConfig) {
+        mergeTo(this.localConfig, config)
+        this.localConfig = config
+    }
+
+    @Input()
+    set data(data: ClickData) {
+        mergeTo(this.localData, data)
+        this.localData = data
+    }
+
+    @Input()
+    set events(events: ClickEvent) {
+        mergeTo(this.localEvents, events)
+        this.localEvents = events
+    }
+
+    get hasDisplayWrapperState() {
+        return (this.localConfig.width || 0) > 0 || (this.localConfig.height || 0) > 0
+    }
+
+    get hasDisplayImageState() {
+        return this.localData.image != '' && this.localData.thumb != ''
+    }
 
     clickEvent(e: Event|any){
         const dom = e.currentTarget
@@ -36,11 +58,10 @@ export class ClickComponent {
         const yy = parseInt(yPos.toString())
         const date = new Date()
         const index = this.dots.length
-        const list = this.dots
-        list.push({key: date.getTime(), index: index + 1, x: xx, y: yy})
-        this.dots = list
 
-        this.events.click && this.events.click(xx, yy)
+        this.dots.push({key: date.getTime(), index: index + 1, x: xx, y: yy})
+
+        this.localEvents.click && this.localEvents.click(xx, yy)
         e.cancelBubble = true
         e.preventDefault()
         return false
@@ -55,7 +76,7 @@ export class ClickComponent {
             console.warn("parse dots error", e)
         }
 
-        this.events.confirm && this.events.confirm(dots, () => {
+        this.localEvents.confirm && this.localEvents.confirm(dots, () => {
             this.dots = []
         })
         e.cancelBubble = true
@@ -64,18 +85,36 @@ export class ClickComponent {
     }
 
     closeEvent(e: Event|any){
-        this.events.close && this.events.close()
-        this.dots = []
+        this.close()
         e.cancelBubble = true
         e.preventDefault()
         return false
     }
 
-    refreshEvent(e: Event|any){
-        this.events.refresh && this.events.refresh()
-        this.dots = []
+    refreshEvent(e: Event|any) {
+        this.refresh()
         e.cancelBubble = true
         e.preventDefault()
         return false
+    }
+
+    reset(){
+        this.dots = []
+    }
+
+    clear(){
+        this.reset()
+        this.localData.thumb = ''
+        this.localData.image = ''
+    }
+
+    close() {
+        this.localEvents.close && this.localEvents.close()
+        this.reset()
+    }
+
+    refresh() {
+        this.localEvents.refresh && this.localEvents.refresh()
+        this.reset()
     }
 }

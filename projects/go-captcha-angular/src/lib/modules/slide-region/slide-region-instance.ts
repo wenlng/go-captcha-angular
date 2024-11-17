@@ -1,8 +1,15 @@
 /**
  * @Author Awen
- * @Date 2024/05/25
+ * @Date 2024/06/01
  * @Email wengaolng@gmail.com
  **/
+
+export interface SlideRegionRef {
+    reset: () => void,
+    clear: () => void,
+    refresh: () => void,
+    close: () => void,
+}
 
 export interface SlideRegionConfig {
     width?: number;
@@ -11,6 +18,8 @@ export interface SlideRegionConfig {
     horizontalPadding?: number;
     showTheme?: boolean;
     title?: string;
+    iconSize?: number;
+    scope ?: boolean;
 }
 
 export const defaultSlideRegionConfig = ():SlideRegionConfig => ({
@@ -20,6 +29,8 @@ export const defaultSlideRegionConfig = ():SlideRegionConfig => ({
     horizontalPadding: 12,
     showTheme: true,
     title: "请拖动滑块完成拼图",
+    iconSize: 22,
+    scope: true,
 })
 
 export interface SlideRegionData {

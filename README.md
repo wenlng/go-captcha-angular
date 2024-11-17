@@ -75,6 +75,8 @@ interface ClickConfig {
   showTheme?: boolean;
   title?: string;
   buttonText?: string;
+  iconSize?: number;
+  dotSize?: number;
 }
 
 // data = {}
@@ -88,7 +90,15 @@ interface ClickEvents {
   click?: (x: number, y: number) => void;
   refresh?: () => void;
   close?: () => void;
-  confirm?: (dots: Array<ClickDot>) => boolean;
+  confirm?: (dots: Array<ClickDot>, reset: ()=>void) => boolean;
+}
+
+// component method
+interface PublicMethods {
+  reset: () => void,
+  clear: () => void,
+  refresh: () => void,
+  close: () => void,
 }
 ```
 
@@ -120,6 +130,8 @@ interface SlideConfig {
   horizontalPadding?: number;
   showTheme?: boolean;
   title?: string;
+  iconSize?: number;
+  scope ?: boolean;
 }
 
 // data = {}
@@ -137,7 +149,15 @@ interface SlideEvents {
   move?: (x: number, y: number) => void;
   refresh?: () => void;
   close?: () => void;
-  confirm?: (point: SlidePoint) => boolean;
+  confirm?: (point: SlidePoint, reset: () => void) => boolean;
+}
+
+// component method
+interface PublicMethods {
+  reset: () => void,
+  clear: () => void,
+  refresh: () => void,
+  close: () => void,
 }
 ```
 
@@ -152,6 +172,8 @@ interface SlideRegionConfig {
   horizontalPadding?: number;
   showTheme?: boolean;
   title?: string;
+  iconSize?: number;
+  scope ?: boolean;
 }
 
 // data = {}
@@ -169,7 +191,15 @@ interface SlideRegionEvents {
   move?: (x: number, y: number) => void;
   refresh?: () => void;
   close?: () => void;
-  confirm?: (point: SlideRegionPoint) => boolean;
+  confirm?: (point: SlideRegionPoint, reset: ()=>void) => boolean;
+}
+
+// component method
+interface PublicMethods {
+  reset: () => void,
+  clear: () => void,
+  refresh: () => void,
+  close: () => void,
 }
 ```
 
@@ -196,6 +226,8 @@ interface RotateConfig {
   horizontalPadding?: number;
   showTheme?: boolean;
   title?: string;
+  iconSize?: number;
+  scope ?: boolean;
 }
 
 // data = {}
@@ -210,7 +242,15 @@ interface RotateEvents {
   rotate?: (angle: number) => void;
   refresh?: () => void;
   close?: () => void;
-  confirm?: (angle: number) => boolean;
+  confirm?: (angle: number, reset: ()=>void) => boolean;
+}
+
+// component method
+interface PublicMethods {
+  reset: () => void,
+  clear: () => void,
+  refresh: () => void,
+  close: () => void,
 }
 ```
 

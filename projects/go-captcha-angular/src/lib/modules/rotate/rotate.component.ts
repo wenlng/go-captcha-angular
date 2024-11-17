@@ -1,5 +1,5 @@
 import {Component, ElementRef, Input, ViewChild, ViewEncapsulation} from '@angular/core'
-import {checkTargetFather} from "../../helper/helper";
+import {checkTargetFather, mergeTo} from "../../helper/helper";
 import {defaultRotateConfig, RotateConfig, RotateData, RotateEvent} from "./rotate-instance";
 
 @Component({
@@ -9,12 +9,12 @@ import {defaultRotateConfig, RotateConfig, RotateData, RotateEvent} from "./rota
     encapsulation: ViewEncapsulation.None,
 })
 export class RotateComponent {
-    @Input()
-    config?: RotateConfig = defaultRotateConfig()
-    @Input()
-    data: RotateData = {angle: 0, image: "", thumb: ""} as RotateData
-    @Input()
-    events?: RotateEvent = {}
+    localConfig?: RotateConfig = defaultRotateConfig()
+    localData: RotateData = {angle: 0, image: "", thumb: ""} as RotateData
+    localEvents?: RotateEvent = {}
+
+    @ViewChild('rootRef', {static: false})
+    rootRef: ElementRef
 
     @ViewChild('dragBlockRef', {static: false})
     dragBlockRef: ElementRef
@@ -23,15 +23,48 @@ export class RotateComponent {
     dragBarRef: ElementRef
 
     dragLeft: number = 0
-    thumbAngle: number = this.data.angle || 0
+    thumbAngle: number = this.localData.angle || 0
+    isFreeze: boolean = false
+
+    @Input()
+    set config(config: RotateConfig) {
+        mergeTo(this.localConfig, config)
+        this.localConfig = config
+    }
+
+    @Input()
+    set data(data: RotateData) {
+        mergeTo(this.localData, data)
+        this.localData = data
+        this.updateState()
+    }
+
+    @Input()
+    set events(events: RotateEvent) {
+        mergeTo(this.localEvents, events)
+        this.localEvents = events
+    }
+
+    get hasDisplayWrapperState() {
+        return (this.localConfig.width || 0) > 0 || (this.localConfig.height || 0) > 0
+    }
+
+    get hasDisplayImageState() {
+        return this.localData.image != '' && this.localData.thumb != ''
+    }
+
+    get size() {
+        return (this.localConfig.size || 0) > 0 ? this.localConfig.size : defaultRotateConfig().size
+    }
 
     ngAfterViewInit() {
         this.dragBlockRef.nativeElement.addEventListener('dragstart', (event: any) => event.preventDefault());
     }
 
-    clear = () => {
-        this.dragLeft = 0
-        this.thumbAngle = 0
+    updateState() {
+        if (!this.isFreeze) {
+            this.thumbAngle = (this.localData.angle || 0)
+        }
     }
 
     dragEvent = (e: Event|any) => {
@@ -41,12 +74,14 @@ export class RotateComponent {
         const width = this.dragBarRef.nativeElement.offsetWidth
         const blockWidth = this.dragBlockRef.nativeElement.offsetWidth
         const maxWidth = width - blockWidth
-        const p = 360 / maxWidth
+        const maxAngle = 360
+        const p = (maxAngle - this.localData.angle) / maxWidth
 
         let angle = 0
         let isMoving = false
         let tmpLeaveDragEvent: Event|any = null
         let startX = 0;
+        let currentAngle = 0
         if (touch) {
             startX = touch.pageX - offsetLeft
         } else {
@@ -64,21 +99,25 @@ export class RotateComponent {
                 left = e.clientX - startX
             }
 
+            angle = this.localData.angle + (left * p)
+
             if (left >= maxWidth) {
                 this.dragLeft = maxWidth
+                this.thumbAngle = currentAngle = maxAngle
                 return
             }
 
             if (left <= 0) {
                 this.dragLeft = 0
+                this.thumbAngle = currentAngle = this.localData.angle
                 return
             }
 
             this.dragLeft = left
-            angle = (left * p)
+            currentAngle = angle
             this.thumbAngle = angle
 
-            this.events.rotate && this.events.rotate(angle)
+            this.localEvents.rotate && this.localEvents.rotate(angle)
 
             e.cancelBubble = true
             e.preventDefault()
@@ -95,8 +134,13 @@ export class RotateComponent {
 
             isMoving = false
             clearEvent()
-            this.events.confirm && this.events.confirm(parseInt(angle.toString()), () => {
-                this.clear()
+
+            if (currentAngle <= 0) {
+                return
+            }
+
+            this.localEvents.confirm && this.localEvents.confirm(parseInt(currentAngle.toString()), () => {
+                this.reset()
             })
 
             e.cancelBubble = true
@@ -120,46 +164,68 @@ export class RotateComponent {
             clearEvent()
         }
 
+        const scope = this.localConfig.scope
+        const dragDom = scope ? this.rootRef.nativeElement : this.dragBarRef.nativeElement
+        const scopeDom = scope ? this.rootRef.nativeElement : document.body
+
         const clearEvent = () => {
-            this.dragBarRef.nativeElement.removeEventListener("mousemove", moveEvent, false)
-            this.dragBarRef.nativeElement.removeEventListener("touchmove", moveEvent, { passive: false })
+            scopeDom.removeEventListener("mousemove", moveEvent, false)
+            scopeDom.removeEventListener("touchmove", moveEvent, { passive: false })
 
-            this.dragBarRef.nativeElement.removeEventListener( "mouseup", upEvent, false)
-            // this.dragBarRef.nativeElement.removeEventListener( "mouseout", upEvent, false)
-            this.dragBarRef.nativeElement.removeEventListener( "mouseenter", enterDragBlockEvent, false)
-            this.dragBarRef.nativeElement.removeEventListener( "mouseleave", leaveDragBlockEvent, false)
-            this.dragBarRef.nativeElement.removeEventListener("touchend", upEvent, false)
+            dragDom.removeEventListener( "mouseup", upEvent, false)
+            dragDom.removeEventListener( "mouseenter", enterDragBlockEvent, false)
+            dragDom.removeEventListener( "mouseleave", leaveDragBlockEvent, false)
+            dragDom.removeEventListener("touchend", upEvent, false)
 
-            document.body.removeEventListener("mouseleave", upEvent, false)
-            document.body.removeEventListener("mouseup", leaveUpEvent, false)
+            scopeDom.removeEventListener("mouseleave", upEvent, false)
+            scopeDom.removeEventListener("mouseup", leaveUpEvent, false)
         }
 
-        this.dragBarRef.nativeElement.addEventListener("mousemove", moveEvent, false)
-        this.dragBarRef.nativeElement.addEventListener("touchmove", moveEvent, { passive: false })
-        this.dragBarRef.nativeElement.addEventListener( "mouseup", upEvent, false)
-        // this.dragBarRef.nativeElement.addEventListener( "mouseout", upEvent, false)
-        this.dragBarRef.nativeElement.addEventListener( "mouseenter", enterDragBlockEvent, false)
-        this.dragBarRef.nativeElement.addEventListener( "mouseleave", leaveDragBlockEvent, false)
-        this.dragBarRef.nativeElement.addEventListener("touchend", upEvent, false)
+        scopeDom.addEventListener("mousemove", moveEvent, false)
+        scopeDom.addEventListener("touchmove", moveEvent, { passive: false })
 
-        document.body.addEventListener("mouseleave", upEvent, false)
-        document.body.addEventListener("mouseup", leaveUpEvent, false)
+        dragDom.addEventListener( "mouseup", upEvent, false)
+        dragDom.addEventListener( "mouseenter", enterDragBlockEvent, false)
+        dragDom.addEventListener( "mouseleave", leaveDragBlockEvent, false)
+        dragDom.addEventListener("touchend", upEvent, false)
+
+        scopeDom.addEventListener("mouseleave", upEvent, false)
+        scopeDom.addEventListener("mouseup", leaveUpEvent, false)
     }
 
-    closeEvent = (e: Event|any) => {
-        this.events.close && this.events.close()
-        this.clear()
+    closeEvent(e: Event|any){
+        this.close()
         e.cancelBubble = true
         e.preventDefault()
         return false
     }
 
-    refreshEvent = (e: Event|any) => {
-        this.events.refresh && this.events.refresh()
-        this.clear()
+    refreshEvent(e: Event|any) {
+        this.refresh()
         e.cancelBubble = true
         e.preventDefault()
         return false
     }
 
+    reset(){
+        this.dragLeft = 0
+        this.thumbAngle = this.localData.angle
+    }
+
+    clear(){
+        this.reset()
+        this.localData.image = ''
+        this.localData.thumb = ''
+        this.localData.angle = 0
+    }
+
+    close() {
+        this.localEvents.close && this.localEvents.close()
+        this.reset()
+    }
+
+    refresh() {
+        this.localEvents.refresh && this.localEvents.refresh()
+        this.reset()
+    }
 }

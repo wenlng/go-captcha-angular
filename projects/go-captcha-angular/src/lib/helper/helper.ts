@@ -38,3 +38,11 @@ export function checkTargetFather(that: any, e: any) {
 
   return parent !== that
 }
+
+export function mergeTo(src: any, dest: any) {
+  for (const ccKey in src) {
+    if (!dest.hasOwnProperty(ccKey)) {
+      dest[ccKey] = src[ccKey]
+    }
+  }
+}
