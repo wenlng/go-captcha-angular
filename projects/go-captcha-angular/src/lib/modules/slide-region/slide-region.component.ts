@@ -9,9 +9,7 @@ import {defaultSlideRegionConfig, SlideRegionConfig, SlideRegionData, SlideRegio
     encapsulation: ViewEncapsulation.None,
 })
 export class SlideRegionComponent {
-    @Input()
     localConfig?: SlideRegionConfig = defaultSlideRegionConfig()
-    @Input()
     localData: SlideRegionData = {
         thumbX: 0,
         thumbY: 0,
@@ -20,7 +18,6 @@ export class SlideRegionComponent {
         image: "",
         thumb: ""
     } as SlideRegionData
-    @Input()
     localEvents?: SlideRegionEvent = {}
 
     @ViewChild('rootRef', {static: false})
@@ -65,11 +62,16 @@ export class SlideRegionComponent {
     }
 
     get hasDisplayImageState() {
-        return this.localData.image != '' && this.localData.thumb != ''
+        return this.localData.image != '' || this.localData.thumb != ''
     }
 
+    private dsFn = (event: any) => event.preventDefault()
     ngAfterViewInit() {
-        this.tileRef.nativeElement.addEventListener('dragstart', (event: any) => event.preventDefault());
+        this.tileRef.nativeElement && this.tileRef.nativeElement.addEventListener('dragstart', this.dsFn);
+    }
+
+    ngOnDestroy() {
+        this.tileRef.nativeElement && this.tileRef.nativeElement.removeEventListener('dragstart', this.dsFn);
     }
 
     updateState() {
@@ -237,12 +239,14 @@ export class SlideRegionComponent {
 
     clear(){
         this.reset()
-        this.localData.image = ''
-        this.localData.thumb = ''
-        this.localData.thumbX = 0
-        this.localData.thumbY = 0
-        this.localData.thumbHeight = 0
-        this.localData.thumbWidth = 0
+        setTimeout(()=> {
+            this.localData.image = ''
+            this.localData.thumb = ''
+            this.localData.thumbX = 0
+            this.localData.thumbY = 0
+            this.localData.thumbHeight = 0
+            this.localData.thumbWidth = 0
+        }, 0)
     }
 
     close() {

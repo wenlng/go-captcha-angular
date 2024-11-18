@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {ClickRef, RotateRef, SlideRef, SlideRegionRef} from "../../../go-captcha-angular/src/lib";
+import {ClickRef, RotateRef, SlideRef, SlideRegionRef} from "../../../go-captcha-angular/src/public-api";
 
 @Component({
   selector: 'app-root',
@@ -96,16 +96,31 @@ export class AppComponent {
       }, 100)
     },
     refresh: (): void => {
-      this.slideData = {
-        ...this.slideData,
-        image: this.clickImage2,
-        thumb: this.slideThumbImage,
-        thumbX: 40,
-        thumbY: 60,
-        thumbWidth: 80,
-        thumbHeight: 80,
-      }
-      console.log("refresh >>>>>>>")
+      this.slideRef?.clear()
+      //
+      // this.slideData = {
+      //   ...this.slideData,
+      //   image: this.clickImage2,
+      //   thumb: this.slideThumbImage,
+      //   thumbX: 40,
+      //   thumbY: 60,
+      //   thumbWidth: 80,
+      //   thumbHeight: 80,
+      // }
+
+      // fetch('/')
+      //   .then(response => response.json())
+      //   .then(data => console.log(data))
+      //   .catch(error => console.error('Error:', error));
+
+      this.slideData.thumbX =  Math.random() * 40
+      this.slideData.thumbY = Math.random() * 60
+      this.slideData.thumbWidth = 80
+      this.slideData.thumbHeight = 80
+      this.slideData.image = this.clickImage2
+      this.slideData.thumb = this.slideThumbImage
+
+      console.log("refresh >>>>>>>",  this.slideData)
     },
     close: (): void => {
       console.log("close >>>>>>>")

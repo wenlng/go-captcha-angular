@@ -9,6 +9,10 @@
     justify-content: center;
     align-items: center;
     margin: 10px auto 0;
+
+    .gc-body-inner {
+      border-radius: 100%;
+    }
   }
 
   .gc-rotate-picture {

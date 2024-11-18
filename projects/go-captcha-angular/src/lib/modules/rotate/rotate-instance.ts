@@ -5,7 +5,6 @@ export interface RotateRef {
     close: () => void,
 }
 
-
 export interface RotateConfig {
     width?: number;
     height?: number;
@@ -35,6 +34,13 @@ export interface RotateData {
     image: string;
     thumb: string;
 }
+
+export const defaultRotateData = (): RotateData =>({
+    angle: 0,
+    image: '',
+    thumb: ''
+})
+
 
 export interface RotateEvent {
     rotate?: (angle: number) => void;

@@ -141,5 +141,6 @@
         }
       }
     }
-  }
+  },
+  "defaultProject": "go-captcha-angular"
 }

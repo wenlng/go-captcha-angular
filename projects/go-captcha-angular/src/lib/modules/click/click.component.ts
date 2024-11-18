@@ -1,5 +1,5 @@
 import {Component, Input, ViewEncapsulation} from '@angular/core'
-import {ClickConfig, ClickData, ClickDot, ClickEvent, defaultClickConfig} from "./click-instance";
+import {ClickConfig, ClickData, ClickDot, ClickEvent, defaultClickConfig, defaultData} from "./click-instance";
 import {getDomXY, mergeTo} from "../../helper/helper";
 
 @Component({
@@ -10,7 +10,7 @@ import {getDomXY, mergeTo} from "../../helper/helper";
 })
 export class ClickComponent {
     localConfig?: ClickConfig = defaultClickConfig()
-    localData: ClickData = {image: "", thumb: ""} as ClickData
+    localData: ClickData = defaultData() as ClickData
     localEvents?: ClickEvent = {}
 
     dots: Array<ClickDot> = []
@@ -104,8 +104,10 @@ export class ClickComponent {
 
     clear(){
         this.reset()
-        this.localData.thumb = ''
-        this.localData.image = ''
+        setTimeout(()=> {
+            this.localData.image = ''
+            this.localData.thumb = ''
+        }, 0)
     }
 
     close() {

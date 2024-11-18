@@ -1,6 +1,6 @@
 import {Component, ElementRef, Input, SimpleChanges, ViewChild, ViewEncapsulation} from '@angular/core'
-import {checkTargetFather, mergeTo} from "../../helper/helper";
-import {defaultSlideConfig, SlideConfig, SlideData, SlideEvent} from "./slide-instance";
+import {checkTargetFather, mergeTo, mergeToOver} from "../../helper/helper";
+import {defaultSlideConfig, defaultSlideData, SlideConfig, SlideData, SlideEvent} from "./slide-instance";
 
 @Component({
     selector: 'go-captcha-slide',
@@ -9,15 +9,8 @@ import {defaultSlideConfig, SlideConfig, SlideData, SlideEvent} from "./slide-in
     encapsulation: ViewEncapsulation.None,
 })
 export class SlideComponent {
-    localConfig?: SlideConfig = defaultSlideConfig()
-    localData: SlideData = {
-        thumbX: 0,
-        thumbY: 0,
-        thumbWidth: 0,
-        thumbHeight: 0,
-        image: "",
-        thumb: ""
-    } as SlideData
+    localConfig?: SlideConfig = {...defaultSlideConfig()}
+    localData: SlideData = {...defaultSlideData()}
     localEvents?: SlideEvent = {}
 
     @ViewChild('rootRef', {static: false})
@@ -62,11 +55,16 @@ export class SlideComponent {
     }
 
     get hasDisplayImageState() {
-        return this.localData.image != '' && this.localData.thumb != ''
+        return this.localData.image != '' || this.localData.thumb != ''
     }
 
+    private dsFn = (event: any) => event.preventDefault()
     ngAfterViewInit() {
-        this.dragBlockRef.nativeElement.addEventListener('dragstart', (event: any) => event.preventDefault());
+        this.dragBlockRef.nativeElement && this.dragBlockRef.nativeElement.addEventListener('dragstart', this.dsFn);
+    }
+
+    ngOnDestroy() {
+        this.dragBlockRef.nativeElement && this.dragBlockRef.nativeElement.removeEventListener('dragstart', this.dsFn);
     }
 
     updateState() {
@@ -84,6 +82,7 @@ export class SlideComponent {
 
         const tileWith  = this.tileRef.nativeElement.offsetWidth
         const tileOffsetLeft = this.tileRef.nativeElement.offsetLeft
+        const containerMaxWidth = width - tileWith
         const tileMaxWith = width - (tileWith + tileOffsetLeft)
         const ratio = tileMaxWith / maxWidth
 
@@ -111,7 +110,7 @@ export class SlideComponent {
             const ctX = tileOffsetLeft + (left * ratio)
             if (left >= maxWidth) {
                 this.state.dragLeft = maxWidth
-                currentThumbX = maxWidth
+                currentThumbX = containerMaxWidth
                 this.state.thumbLeft = currentThumbX
                 return
             }
@@ -221,17 +220,19 @@ export class SlideComponent {
 
     reset(){
         this.state.dragLeft = 0
-        this.state.thumbLeft = this.localData.thumbX
+        this.state.thumbLeft = this.localData.thumbX || 0
     }
 
     clear(){
         this.reset()
-        this.localData.image = ''
-        this.localData.thumb = ''
-        this.localData.thumbX = 0
-        this.localData.thumbY = 0
-        this.localData.thumbHeight = 0
-        this.localData.thumbWidth = 0
+        setTimeout(()=> {
+            this.localData.image = ''
+            this.localData.thumb = ''
+            this.localData.thumbX = 0
+            this.localData.thumbY = 0
+            this.localData.thumbHeight = 0
+            this.localData.thumbWidth = 0
+        }, 0)
     }
 
     close() {

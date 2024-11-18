@@ -1,6 +1,6 @@
 {
   "name": "go-captcha-angular",
-  "version": "1.0.2",
+  "version": "1.0.2-pre.2",
   "description": "This is the angular package for go-captcha",
   "private": false,
   "email": "wengaolng@gmail.com",
@@ -35,7 +35,7 @@
   "license": "MIT",
   "scripts": {
     "start": "ng serve --open",
-    "build": "ng build go-captcha-angular && run-p build:sass && run-p copy-sass",
+    "build": "ng build && run-p build:sass && run-p copy-sass",
     "build:example": "ng build example --base-href go-captcha-angular/",
     "build:sass": "node-sass --output-style compressed projects/go-captcha-angular/src/scss/ -o dist/go-captcha-angular/css",
     "copy-sass": "mkdir -p dist/go-captcha-angular/scss && cp projects/go-captcha-angular/src/scss/*.scss dist/go-captcha-angular/scss",
@@ -44,9 +44,9 @@
   },
   "dependencies": {
     "@angular/animations": "^15.0.3",
-    "@angular/common": "^15.0.3",
+    "@angular/common": ">=13.0.0",
     "@angular/compiler": "^15.0.3",
-    "@angular/core": "^15.0.3",
+    "@angular/core": ">=13.0.0",
     "@angular/forms": "^15.0.3",
     "@angular/platform-browser": "^15.0.3",
     "@angular/platform-browser-dynamic": "^15.0.3",

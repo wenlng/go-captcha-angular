@@ -39,6 +39,10 @@ export interface ClickData {
     thumb: string;
 }
 
+export const defaultData = (): ClickData => ({
+    image: "", thumb: ""
+})
+
 export interface ClickDot {
     key: number,
     index: number,

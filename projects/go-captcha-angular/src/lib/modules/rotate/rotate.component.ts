@@ -1,6 +1,6 @@
 import {Component, ElementRef, Input, ViewChild, ViewEncapsulation} from '@angular/core'
 import {checkTargetFather, mergeTo} from "../../helper/helper";
-import {defaultRotateConfig, RotateConfig, RotateData, RotateEvent} from "./rotate-instance";
+import {defaultRotateConfig, defaultRotateData, RotateConfig, RotateData, RotateEvent} from "./rotate-instance";
 
 @Component({
     selector: 'go-captcha-rotate',
@@ -10,7 +10,7 @@ import {defaultRotateConfig, RotateConfig, RotateData, RotateEvent} from "./rota
 })
 export class RotateComponent {
     localConfig?: RotateConfig = defaultRotateConfig()
-    localData: RotateData = {angle: 0, image: "", thumb: ""} as RotateData
+    localData: RotateData = defaultRotateData()
     localEvents?: RotateEvent = {}
 
     @ViewChild('rootRef', {static: false})
@@ -50,15 +50,20 @@ export class RotateComponent {
     }
 
     get hasDisplayImageState() {
-        return this.localData.image != '' && this.localData.thumb != ''
+        return this.localData.image != '' || this.localData.thumb != ''
     }
 
     get size() {
         return (this.localConfig.size || 0) > 0 ? this.localConfig.size : defaultRotateConfig().size
     }
 
+    private dsFn = (event: any) => event.preventDefault()
     ngAfterViewInit() {
-        this.dragBlockRef.nativeElement.addEventListener('dragstart', (event: any) => event.preventDefault());
+        this.dragBlockRef.nativeElement && this.dragBlockRef.nativeElement.addEventListener('dragstart', this.dsFn);
+    }
+
+    ngOnDestroy() {
+        this.dragBlockRef.nativeElement && this.dragBlockRef.nativeElement.removeEventListener('dragstart', this.dsFn);
     }
 
     updateState() {
@@ -214,9 +219,11 @@ export class RotateComponent {
 
     clear(){
         this.reset()
-        this.localData.image = ''
-        this.localData.thumb = ''
-        this.localData.angle = 0
+        setTimeout(()=> {
+            this.localData.image = ''
+            this.localData.thumb = ''
+            this.localData.angle = 0
+        }, 0)
     }
 
     close() {
