@@ -82,6 +82,10 @@ export class SlideRegionComponent {
     }
 
     dragEvent(e: Event|any) {
+        if (!checkTargetFather(this.containerRef.nativeElement, e)) {
+            return
+        }
+
         const touch = e.touches && e.touches[0];
         const offsetLeft = this.tileRef.nativeElement.offsetLeft
         const offsetTop = this.tileRef.nativeElement.offsetTop
@@ -151,11 +155,11 @@ export class SlideRegionComponent {
                 return
             }
 
+            clearEvent()
             if (!isMoving) {
                 return
             }
             isMoving = false
-            clearEvent()
 
             if (tileLeft < 0 || tileTop < 0) {
                 return

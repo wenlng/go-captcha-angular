@@ -74,6 +74,10 @@ export class SlideComponent {
     }
 
     dragEvent (e: Event|any) {
+        if (!checkTargetFather(this.dragBarRef.nativeElement, e)) {
+            return
+        }
+
         const touch = e.touches && e.touches[0];
         const offsetLeft = this.dragBlockRef.nativeElement.offsetLeft
         const width = this.containerRef.nativeElement.offsetWidth
@@ -137,12 +141,12 @@ export class SlideComponent {
                 return
             }
 
+            clearEvent()
             if (!isMoving) {
                 return
             }
 
             isMoving = false
-            clearEvent()
 
             if (currentThumbX < 0) {
                 return

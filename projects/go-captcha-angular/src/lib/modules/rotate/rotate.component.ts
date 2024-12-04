@@ -73,6 +73,10 @@ export class RotateComponent {
     }
 
     dragEvent = (e: Event|any) => {
+        if (!checkTargetFather(this.dragBarRef.nativeElement, e)) {
+            return
+        }
+
         const touch = e.touches && e.touches[0];
 
         const offsetLeft = this.dragBlockRef.nativeElement.offsetLeft
@@ -133,12 +137,12 @@ export class RotateComponent {
                 return
             }
 
+            clearEvent()
             if (!isMoving) {
                 return
             }
 
             isMoving = false
-            clearEvent()
 
             if (currentAngle < 0) {
                 return

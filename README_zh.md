@@ -1,22 +1,23 @@
 <div align="center">
 <img width="120" style="padding-top: 50px; margin: 0;" src="http://47.104.180.148/go-captcha/gocaptcha_logo.svg?v=1"/>
 <h1 style="margin: 0; padding: 0">Go Captcha</h1>
-<p>Behavior Captcha For Angular</p>
-
+<p>Angular 行为验证码</p>
 </div>
 
 <br/>
 
-> English | [中文](README_zh.md)
+> [English](README.md) | 中文
 
 <br/>
 
-<p> ⭐️ If it helps you, please give a star.</p>
+<p style="text-align: center"> ⭐️ 如果能帮助到你，请随手给点一个star</p>
+<p style="text-align: center">QQ交流群：178498936</p>
 
 <img src="http://47.104.180.148/go-captcha/go-captcha-v2.jpg" alt="Poster">
 
+<br/>
 
-## Install
+## 安装
 ```shell
 yarn add go-captcha-angular
 # or
@@ -62,7 +63,7 @@ export class AppModule { }
 
 <br/>
 
-## Click Mode
+## 点选式
 ```angular2html
 <go-captcha-click
   [config]="{}"
@@ -123,7 +124,7 @@ interface ExportMethods {
 }
 ```
 
-## Slide Mode
+## 滑动式
 ```angular2html
 <go-captcha-slide
   [config]="{}"
@@ -187,7 +188,7 @@ interface ExportMethods {
 }
 ```
 
-## Drag-And-Drop Mode
+## 拖拽式
 ```angular2html
 <go-captcha-slide-region
   [config]="{}"
@@ -250,7 +251,7 @@ interface ExportMethods {
 }
 ```
 
-## Rotation Mode
+## 旋转式
 ```angular2html
 <go-captcha-rotate
   [config]="{}"
@@ -312,7 +313,7 @@ interface ExportMethods {
 ```
 
 
-## Button
+## 按钮
 ```jsx
 <go-captcha-button />
 ```
@@ -334,3 +335,9 @@ export interface ButtonConfig {
   horizontalPadding?: number;
 }
 ```
+
+## 👍 赞助一下
+<div>
+<a href="http://gocaptcha.wencodes.com/sponsor/" target="_blank">http://gocaptcha.wencodes.com/sponsor/</a>
+</div>
+<br/>
