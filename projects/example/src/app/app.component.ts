@@ -207,9 +207,9 @@ export class AppComponent {
 
   ////////////////////////////////
   rotateData = {
-    angle: 20,
     image: this.rotateImage,
     thumb: this.rotateThumb,
+    thumbSize: 195
   }
 
   rotateEvents = {
@@ -221,7 +221,6 @@ export class AppComponent {
         ...this.rotateData,
         image: this.clickImage2,
         thumb: this.rotateThumb,
-        angle: 40,
       }
       console.log("refresh >>>>>>>")
     },

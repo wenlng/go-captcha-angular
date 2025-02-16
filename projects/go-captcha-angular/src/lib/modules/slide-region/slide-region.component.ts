@@ -62,7 +62,7 @@ export class SlideRegionComponent {
     }
 
     get hasDisplayImageState() {
-        return this.localData.image != '' || this.localData.thumb != ''
+        return (this.localData.image && this.localData.image.length > 0) || (this.localData.thumb && this.localData.thumb.length > 0)
     }
 
     private dsFn = (event: any) => event.preventDefault()

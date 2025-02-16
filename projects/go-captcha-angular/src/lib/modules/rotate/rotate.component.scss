@@ -56,6 +56,14 @@
     right: 0;
     bottom: 0;
 
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     img {
       max-width: 100%;
       max-height: 100%;

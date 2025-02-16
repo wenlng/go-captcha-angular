@@ -45,12 +45,22 @@ export class RotateComponent {
         this.localEvents = events
     }
 
+    get thumbSizeStyle() {
+        return {
+            transform: 'rotate('+this.thumbAngle+'deg)',
+            ...(this.localData.thumbSize > 0 ? {
+                width: this.localData.thumbSize + 'px',
+                height: this.localData.thumbSize + 'px'
+            } : {})
+        }
+    }
+
     get hasDisplayWrapperState() {
         return (this.localConfig.width || 0) > 0 || (this.localConfig.height || 0) > 0
     }
 
     get hasDisplayImageState() {
-        return this.localData.image != '' || this.localData.thumb != ''
+        return (this.localData.image && this.localData.image.length > 0) || (this.localData.thumb && this.localData.thumb.length > 0)
     }
 
     get size() {
