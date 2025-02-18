@@ -2,7 +2,7 @@
   "name": "go-captcha-angular",
   "version": "1.0.4",
   "license": "MIT",
-  "description": "GoCaptcha for Angular, which implements click mode, slider mode, drag-drop mode and rotation mode.",
+  "description": "GoCaptcha of Angular, which implements click mode, slider mode, drag-drop mode and rotation mode.",
   "keywords": [
     "go-captcha-angular",
     "go-captcha-angular2",
