@@ -33,12 +33,11 @@
       <loading-icon></loading-icon>
     </div>
     <img
+      *ngIf="localData.image"
       class="gc-picture"
-      [class]="{'gc-hide': localData.image == ''}"
       [style]="{
         width: localConfig.width + 'px',
-        height: localConfig.height + 'px',
-        display: hasDisplayImageState ? 'block' : 'none'
+        height: localConfig.height + 'px'
       }"
       [attr.src]="localData.image"
       alt=""

@@ -39,8 +39,7 @@
         [style]="{width: localConfig.size + 'px', height: localConfig.size + 'px'}"
       >
         <img
-          [class]="{'gc-hide': localData.image == ''}"
-          [style]="{visibility: hasDisplayImageState ? 'visible' : 'hidden'}"
+          *ngIf="localData.image"
           [src]="localData.image"
           alt=""
         />
@@ -53,8 +52,7 @@
           [style]="thumbSizeStyle"
         >
           <img
-            [class]="{'gc-hide': localData.thumb == ''}"
-            [style]="{display: hasDisplayImageState ? 'block' : 'none'}"
+            *ngIf="localData.thumb"
             [src]="localData.thumb"
             alt=""
           />

@@ -23,9 +23,8 @@
       <loading-icon></loading-icon>
     </div>
     <img
+      *ngIf="localData.image"
       class="gc-picture"
-      [class]="{'gc-hide': localData.image == ''}"
-      [style]="{display: hasDisplayImageState ? 'block' : 'none'}"
       [attr.src]="localData.image"
       alt=""
     />
@@ -42,8 +41,7 @@
       (touchstart)="dragEvent($event)"
     >
       <img
-        [class]="{'gc-hide': localData.thumb == ''}"
-        [style]="{display: hasDisplayImageState ? 'block' : 'none'}"
+        *ngIf="hasDisplayImageState"
         [attr.src]="localData.thumb"
         alt=""
       />
