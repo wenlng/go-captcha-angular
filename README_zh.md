@@ -1,7 +1,14 @@
 <div align="center">
-<img width="120" style="padding-top: 50px; margin: 0;" src="http://47.104.180.148/go-captcha/gocaptcha_logo.svg?v=1"/>
+<img width="120" style="padding-top: 50px; margin: 0;" src="https://github.com/wenlng/git-assets/blob/master/go-captcha/gocaptcha_logo.svg?raw=true"/>
 <h1 style="margin: 0; padding: 0">Go Captcha</h1>
 <p>Angular 行为验证码</p>
+
+<a href="https://github.com/wenlng/go-captcha-angular/releases"><img src="https://img.shields.io/github/v/release/wenlng/go-captcha-angular.svg"/></a>
+<a href="https://www.npmjs.com/package/go-captcha-angular"><img src="https://img.shields.io/npm/v/go-captcha-angular"/></a>
+<a href="https://github.com/wenlng/go-captcha-angular/blob/LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg"/></a>
+<a href="https://github.com/wenlng/go-captcha-angular"><img src="https://img.shields.io/github/stars/wenlng/go-captcha-angular.svg"/></a>
+<a href="https://github.com/wenlng/go-captcha-angular"><img src="https://img.shields.io/github/last-commit/wenlng/go-captcha-angular.svg"/></a>
+
 </div>
 
 <br/>
@@ -13,7 +20,7 @@
 <p style="text-align: center"> ⭐️ 如果能帮助到你，请随手给点一个star</p>
 <p style="text-align: center">QQ交流群：178498936</p>
 
-<img src="http://47.104.180.148/go-captcha/go-captcha-v2.jpg" alt="Poster">
+<img src="https://github.com/wenlng/git-assets/blob/master/go-captcha/go-captcha-v2.jpg?raw=true" alt="Poster">
 
 <br/>
 
@@ -290,7 +297,6 @@ interface RotateConfig {
 
 // data = {}
 interface RotateData {
-  angle: number;
   image: string;
   thumb: string;
   thumbSize: number;
